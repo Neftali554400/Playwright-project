@@ -7,7 +7,7 @@ import { defineConfig, devices, firefox } from '@playwright/test';
 
 const config = ({
   testDir: './tests',
-  timeout: 500000, 
+  timeout: 30 * 1000, 
 
   expect: { 
     timeout: 5000,  
