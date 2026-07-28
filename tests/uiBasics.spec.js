@@ -42,38 +42,53 @@ test.only('login to Practice Website', async ({browser}) => {
     const context = await browser.newContext();
     const page = await context.newPage();
 
-    const firstName = page.locator('input[type="firstName"]');
-    const lastName = page.locator('input[type="lastName"]');
-    const Email = page.locator('input[type="email"]');
-    const PhoneNumber = page.locator("#userMobile");
-    const Password = page.locator('input[type="password"]');
-    const ConfirmPassword = page.locator('#confirmPassword');
-
+    // const firstName = page.locator('input[type="firstName"]');
+    // const lastName = page.locator('input[type="lastName"]');
+    // const Email = page.locator('input[type="email"]');
+    
+    const prodTitle = page.locator('#products b');
+    
     await page.goto('https://rahulshettyacademy.com/client/#/auth/login');
-    await page.locator('.text-reset').click();
+    //await page.locator('.text-reset').click();
 
     // Get the title, put an assertion
     console.log(await page.title());
 
-    // Fill the registration form
-    await firstName.fill("Michael");
-    await lastName.fill("Michael");
-    await Email.fill("michael.neftali@gmail.com");
-    await PhoneNumber.fill("+2348108989212");
-    await Password.fill("kike#124#^&^&^");
-    await ConfirmPassword.fill("kike#124#^&^&^");
+    // // Fill the registration form
+    // await firstName.fill("Michael");
+    // await lastName.fill("Neftali");
+    // await Email.fill("michael.neftali@gmail.com");
+    // await page.locator('#userMobile').fill("8108989212");
+    // await page.locator('#userPassword').fill("Kike#124#^&^&^");
+    // await page.locator('#confirmPassword').fill("Kike#124#^&^&^");
+    
 
-    // Select Gender
-    await page.locator('input[type="radio"]').first().check();
+    // // Select Gender
+    // await page.locator('input[type="radio"]').first().check();
 
-    // Accept Terms & Conditions
-    await page.locator('input[type="checkbox"]').check();
+    // // Accept Terms & Conditions
+    // await page.locator('input[type="checkbox"]').check();
 
-    // Select Occupation
-    await page
-        .locator('.custom-select.ng-pristine.ng-valid.ng-touched')
-        .handle
-        .selectOption({ label: 'Engineer' });
+    // // Select Occupation
+    // await page
+    // .getByRole('combobox')
+    // .selectOption({ value: '3: Engineer' });
+
+
+    //Login 
+    await page.locator('#userEmail').fill("michael.neftali@gmail.com");
+    await page.locator('#userPassword').fill("Kike#124#^&^&^"); 
+    await page.locator('input[type="submit"]').click();
+    
+
+    //Get Title of all Products 
+    console.log(await prodTitle.first().textContent());
+    console.log(await prodTitle.nth(1).textContent());
+    const allprodTitles = await prodTitle.allTextContents(); 
+    console.log(allprodTitles);
+
+    
+
 
 });
     
