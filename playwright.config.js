@@ -1,40 +1,24 @@
 // @ts-check
-import { defineConfig, devices, firefox } from '@playwright/test';
+const { defineConfig, devices } = require('@playwright/test');
 
-/** 
-* @see https://playwright.dev/docs/test-configuration 
-*/
-
-const config = ({
+module.exports = defineConfig({
   testDir: './tests',
-  timeout: 30 * 1000, 
-
-  expect: { 
-    timeout: 5000,  
-  }, 
-
-  use: {
-    browserName: 'webkit'
-
+  timeout: 30 * 1000,
+  expect: {
+    timeout: 5000,
   },
-
-}); 
-module.exports = defineConfig({
-  // Make sure 'html' is listed as a reporter:
-  reporter: [['html', { open: 'never' }]], 
-});
- 
-module.exports = defineConfig({
-  // Global configuration applied to all projects
+  reporter: [['html', { open: 'never' }]],
   use: {
     headless: false,
+    browserName: 'chromium',
+    launchOptions: {
+      args: ['--no-sandbox', '--disable-dev-shm-usage'],
+    },
   },
-
   projects: [
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-    
   ],
 });
