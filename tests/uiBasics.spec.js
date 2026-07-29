@@ -3,6 +3,7 @@ const { test, expect } = require('@playwright/test');
 test('first playwright test', async ({ browser }) => {
     const context = await browser.newContext();
     const page = await context.newPage();
+
     const cardTitles = page.locator('.card-title a');
     const userName = page.locator('#username');
     const signIn = page.locator('#signInBtn');
@@ -26,8 +27,6 @@ test('first playwright test', async ({ browser }) => {
     console.log(allTitles);
 });
 
-
-
 test('second playwright test', async ({ browser }) => {
     const context = await browser.newContext();
     const page = await context.newPage();
@@ -37,7 +36,6 @@ test('second playwright test', async ({ browser }) => {
     await expect(page).toHaveTitle('Google');
 });
 
-
 test.only('login to Practice Website', async ({browser}) => {
     const context = await browser.newContext();
     const page = await context.newPage();
@@ -46,7 +44,6 @@ test.only('login to Practice Website', async ({browser}) => {
     // const lastName = page.locator('input[type="lastName"]');
     // const Email = page.locator('input[type="email"]');
     
-    const prodTitle = page.locator('#products b');
     
     await page.goto('https://rahulshettyacademy.com/client/#/auth/login');
     //await page.locator('.text-reset').click();
@@ -74,21 +71,15 @@ test.only('login to Practice Website', async ({browser}) => {
     // .getByRole('combobox')
     // .selectOption({ value: '3: Engineer' });
 
-
     //Login 
     await page.locator('#userEmail').fill("michael.neftali@gmail.com");
     await page.locator('#userPassword').fill("Kike#124#^&^&^"); 
     await page.locator('input[type="submit"]').click();
     
-
-    //Get Title of all Products 
-    console.log(await prodTitle.first().textContent());
-    console.log(await prodTitle.nth(1).textContent());
-    const allprodTitles = await prodTitle.allTextContents(); 
+    //Get Title of all Products  
+    await page.waitForLoadState('networkidle');
+    const allprodTitles = await page.locator('#products b').allTextContents();
     console.log(allprodTitles);
-
-    
-
 
 });
     
