@@ -33,7 +33,7 @@ test.only('child window handling', async ({ browser }) => {
     const documentLink = page.locator('[href*="documents-request"]');  
 
     const [newPage] = await Promise.all([
-
+        
     context.waitForEvent('page'),
     documentLink.click(),
     ])

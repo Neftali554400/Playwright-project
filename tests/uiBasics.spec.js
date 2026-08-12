@@ -58,8 +58,8 @@ test.only('login to Practice Website', async ({browser}) => {
     // await page.locator('#userMobile').fill("8108989212");
     // await page.locator('#userPassword').fill("Kike#124#^&^&^");
     // await page.locator('#confirmPassword').fill("Kike#124#^&^&^");
-    
 
+    
     // // Select Gender
     // await page.locator('input[type="radio"]').first().check();
 

@@ -3,6 +3,7 @@ const { test, expect } = require('@playwright/test');
 
 test.only('order flow', async ({ page }) => {
 
+    const email = "michael.neftali@gmail.com";
     const productName = 'Zara Coat 4'; 
     const products = page.locator(".card-body");
     await page.goto("https://rahulshettyacademy.com/client/#/auth/login");
@@ -18,7 +19,7 @@ test.only('order flow', async ({ page }) => {
     const count = await products.count(); 
     for (let i = 0; i < count; i++) {
         if (await products.nth(i).locator("b").textContent() === productName) {
-            await products.nth(i).locator("text= Add to Cart").click();
+            await products.nth(i).locator("text= Add To Cart").click();
             break;
         }        
     }
@@ -27,7 +28,7 @@ test.only('order flow', async ({ page }) => {
     const bool = await page.locator("h3:has-text('ZARA COAT 4')").isVisible();
     expect(bool).toBeTruthy();
     await page.locator("text=checkout").click(); 
-    await page.locator("[placeholder*='Country']").pressSequentially("Nig", {delay:100});
+    await page.locator("[placeholder*='Country']").pressSequentially("Nig", {delay:150});
     await page.locator(".ta-results");
     await dropdown.waitFor(); 
     optionsCount = await dropdown.locator("button").count(); 
@@ -39,7 +40,9 @@ test.only('order flow', async ({ page }) => {
             break; 
         }
     }
-    await page.pause();
+    expect(page.locator(".user__name [type='text']").first()).toHaveText(email);
+    await page.locator(".action__submit").click(); 
+    expect(page.locator("hero-primary")).toHaveText(" Thank you for the order. ");
 
 
 
