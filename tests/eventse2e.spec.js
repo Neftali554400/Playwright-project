@@ -24,6 +24,7 @@ test('codegenrecord', async ({ page }) => {
   await page.locator('#add-event-btn').click();
   await expect(page.getByText('Event created!')).toBeVisible();
   await page.getByTestId('nav-events').click();
+  
   const eventCount = await eventCards.count();
   await expect(eventCards.first()).toBeVisible();
   const eventCard = eventCards.filter({ hasText: 'DevFest' });
