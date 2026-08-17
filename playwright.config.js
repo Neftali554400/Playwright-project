@@ -11,6 +11,8 @@ module.exports = defineConfig({
   use: {
     headless: false,
     browserName: 'chromium',
+    screenshot: 'on',
+    trace: 'retain-on-failure', //off-on
     launchOptions: {
       args: ['--no-sandbox', '--disable-dev-shm-usage'],
     },

@@ -36,7 +36,7 @@ test('second playwright test', async ({ browser }) => {
     await expect(page).toHaveTitle('Google');
 });
 
-test.only('login to Practice Website', async ({browser}) => {
+test('login to Practice Website', async ({browser}) => {
     const context = await browser.newContext();
     const page = await context.newPage();
 
