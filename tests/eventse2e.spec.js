@@ -49,11 +49,20 @@ test('codegenrecord', async ({ page }) => {
   await expect(bookingCards.first()).toBeVisible();
   const matchedBookingCard = bookingCards.filter({has: page.locator('.booking-ref', { hasText: bookingRef })});
   await expect(matchedBookingCard).toBeVisible();
-  await expect(matchedBookingCard).toContainText('DevFest');
+  await expect(matchedBookingCard).toContainText('DevFest'); 
 
-
-
+  await page.goto(`${BASE_URL}/events`);
+  await expect(eventCards.first()).toBeVisible();
+  const eventCardAfterBooking = eventCards.filter({ hasText: 'DevFest' });
+  await expect(eventCardAfterBooking).toBeVisible();
+  const seatTextAfterBooking = await eventCardAfterBooking .getByText('seats available') .innerText();
+  const seatsAfterBooking = parseInt(seatTextAfterBooking.match(/\d+/)[0],10);
+  expect(seatsAfterBooking).toBe(seatsBeforeBooking - 1);
+  
   await page.waitForTimeout(5000);
+
+
+
 
 
 
