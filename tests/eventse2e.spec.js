@@ -3,9 +3,10 @@ import { test, expect } from '@playwright/test';
 test('codegenrecord', async ({ page }) => { 
 
   const eventTitle = `DevFest ${Date.now()}`;
-  const eventCards = page.locator('[data-testid="event-card"]');
+  const eventCards = page.locator('[data-testid="event-card"]'); 
+  const BASE_URL = 'https://eventhub.rahulshettyacademy.com';
 
-  await page.goto('https://eventhub.rahulshettyacademy.com/login');
+  await page.goto(BASE_URL);
   await page.getByPlaceholder('you@email.com').fill('michael.neftali@gmail.com');
   await page.getByLabel('Password').fill('Kike#124#^&^&^'); 
   await page.locator('#login-btn').click(); 
@@ -24,11 +25,34 @@ test('codegenrecord', async ({ page }) => {
   await page.locator('#add-event-btn').click();
   await expect(page.getByText('Event created!')).toBeVisible();
   await page.getByTestId('nav-events').click();
-  
   const eventCount = await eventCards.count();
   await expect(eventCards.first()).toBeVisible();
   const eventCard = eventCards.filter({ hasText: 'DevFest' });
   await expect(eventCard).toBeVisible();
+  const seatText = await eventCard.getByText(/seats?/i).innerText();
+  const seatsBeforeBooking = parseInt(seatText.match(/\d+/)[0], 10);
+  await eventCard.getByTestId('book-now-btn').click();
+
+  await expect(page.locator('#ticket-count')).toHaveText('1');
+  await page.getByLabel('Full Name').fill('Michael Neftali');
+  await page.locator('#customer-email').fill('michael.neftali@gmail.com');
+  await page.getByPlaceholder('+91 98765 43210').fill('+234 801 234 5678');
+  await page.locator('.confirm-booking-btn').click();
+
+  const bookingRefElement = page.locator('.booking-ref').first();
+  await expect(bookingRefElement).toBeVisible();
+  const bookingRef = (await page.locator('.booking-ref').first().innerText()).trim();
+
+  await page.getByRole('button', { name: 'View My Bookings' }).click();
+  await expect(page).toHaveURL(`${BASE_URL}/bookings`);
+  const bookingCards = page.locator('#booking-card');
+  await expect(bookingCards.first()).toBeVisible();
+  const matchedBookingCard = bookingCards.filter({has: page.locator('.booking-ref', { hasText: bookingRef })});
+  await expect(matchedBookingCard).toBeVisible();
+  await expect(matchedBookingCard).toContainText('DevFest');
+
+
+
   await page.waitForTimeout(5000);
 
 
