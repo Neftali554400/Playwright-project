@@ -17,7 +17,7 @@ test('codegenrecord', async ({ page }) => {
   await page
   .locator('#admin-event-form textarea')
   .fill('This is a one of a kind event hosted in Los Angeles');
-  await page.getByLabel('City').fill('Maryland'); 
+  await page.getByLabel('City').fill('Maryland');
   await page.getByLabel('Venue').fill('34 TopDown Park, Adx 2349'); 
   await page.getByLabel('Event Date & Time').fill('2026-08-25T10:00');
   await page.getByLabel('Price ($)').fill('800');
@@ -58,31 +58,8 @@ test('codegenrecord', async ({ page }) => {
   const seatTextAfterBooking = await eventCardAfterBooking .getByText('seats available') .innerText();
   const seatsAfterBooking = parseInt(seatTextAfterBooking.match(/\d+/)[0],10);
   expect(seatsAfterBooking).toBe(seatsBeforeBooking - 1);
-  
+
   await page.waitForTimeout(5000);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 });
