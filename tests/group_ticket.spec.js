@@ -38,6 +38,6 @@ test('group ticket', async ({ page }) => {
   await expect(refundResult).toContainText('Group bookings (3 tickets) are non-refundable');
 
  
-await page.waitForTimeout(5000);
+  await page.waitForTimeout(5000);
 
 });
