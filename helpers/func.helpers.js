@@ -1,4 +1,5 @@
-process.loadEnvFile('.env');
+const path = require('path');
+process.loadEnvFile(path.resolve(__dirname, '../.env'));
 const { expect } = require('@playwright/test');
 
   const BASE_URL = 'https://eventhub.rahulshettyacademy.com';
