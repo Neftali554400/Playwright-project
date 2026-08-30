@@ -3,6 +3,8 @@ const loginPayload = { userEmail: "michael.neftali@gmail.com", userPassword: "Ki
 let token;
 
 test.beforeAll(async () => {
+
+   //Login API call to get the token
   const apiContext = await request.newContext();
 
   const LoginResponse = await apiContext.post('https://rahulshettyacademy.com/api/ecom/auth/login',
@@ -13,10 +15,11 @@ test.beforeAll(async () => {
 
   expect(LoginResponse.ok()).toBeTruthy();
     const loginResponseJson = await LoginResponse.json();
-      token = loginResponseJson.token;
-      await apiContext.dispose();
-});
+         token = loginResponseJson.token;
 
+      await apiContext.dispose();
+
+});
 
 test('@Webst Client App login', async ({ page }) => {
 
@@ -41,7 +44,32 @@ test('@Webst Client App login', async ({ page }) => {
    for (let i = 0; i < count; ++i) {
       if (await products.nth(i).locator("b").textContent() === productName) {
          //add to cart
+         const addToCartRequestPromise = page.waitForRequest(request =>
+            request.url().includes('/api/ecom/') && request.method() === 'POST'
+         );
          await products.nth(i).locator("text= Add To Cart").click();
+         const addToCartRequest = await addToCartRequestPromise;
+         const productId = addToCartRequest.postDataJSON()._id;
+
+         //Create order API call to create an order
+         const orderResponse = await page.request.post('https://rahulshettyacademy.com/api/ecom/order/create-order',
+            {
+               headers: {
+                  Authorization: token
+               },
+               data: {
+                  orders: [
+                     {
+                        country: 'Nigeria',
+                        productOrderedId: productId
+                     }
+                  ]
+               }
+            }
+         );
+         expect(orderResponse.ok()).toBeTruthy();
+         const orderResponseJson = await orderResponse.json();
+         expect(orderResponseJson.orders[0]).toBeTruthy();
          break;
       }
    }
