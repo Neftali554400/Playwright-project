@@ -9,7 +9,7 @@ module.exports = defineConfig({
   },
   reporter: [['html', { open: 'never' }]],
   use: {
-    headless: false,
+    headless: process.env.HEADED !== 'true',
     browserName: 'chromium',
     screenshot: 'on',
     trace: 'retain-on-failure', //off-on
