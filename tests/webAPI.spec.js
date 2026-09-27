@@ -39,7 +39,7 @@ test('@Webst Client App login', async ({ page }) => {
    await page.waitForLoadState('networkidle');
    await page.locator(".card-body b").first().waitFor();
    const titles = await page.locator(".card-body b").allTextContents();
-   console.log(titles); 
+   
    const count = await products.count();
    for (let i = 0; i < count; ++i) {
       if (await products.nth(i).locator("b").textContent() === productName) {
@@ -67,9 +67,16 @@ test('@Webst Client App login', async ({ page }) => {
                }
             }
          );
-         expect(orderResponse.ok()).toBeTruthy();
-         const orderResponseJson = await orderResponse.json();
-         expect(orderResponseJson.orders[0]).toBeTruthy();
+const responseBody = await orderResponse.text();
+
+expect(
+  orderResponse.ok(),
+  `Order API failed: ${orderResponse.status()} ${responseBody}`
+).toBeTruthy();
+
+const orderResponseJson = JSON.parse(responseBody);
+expect(orderResponseJson.orders?.[0]).toBeTruthy();
+
          break;
       }
    }
@@ -98,7 +105,7 @@ test('@Webst Client App login', async ({ page }) => {
    await page.locator(".action__submit").click();
    await expect(page.locator(".hero-primary")).toHaveText(" Thankyou for the order. ");
    const orderId = await page.locator(".em-spacer-1 .ng-star-inserted").textContent();
-   console.log(orderId);
+   
  
    await page.locator("button[routerlink*='myorders']").click();
    await page.locator("tbody").waitFor();
