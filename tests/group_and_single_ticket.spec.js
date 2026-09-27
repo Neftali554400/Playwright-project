@@ -3,7 +3,7 @@ process.loadEnvFile(path.resolve(__dirname, '../.env'));
 const { test, expect } = require('@playwright/test');
 const { loginAndGoToBooking } = require('../helpers/func.helpers.js');
 
-test.only('single ticket', async ({ page }) => {
+test('single ticket', async ({ page }) => {
   const BASE_URL = 'https://eventhub.rahulshettyacademy.com';
 
   // Log in and open the events page.

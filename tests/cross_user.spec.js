@@ -3,7 +3,7 @@ const { test, expect } = require('@playwright/test');
 const BASE_URL = 'https://eventhub.rahulshettyacademy.com';
 
 const YAHOO_USER = {
-  email: 'freelanceneftali@gmail.com',
+  email: 'michael.neftali@gmail.com',
   password: 'Kike#124#^&^&^'
 };
 
