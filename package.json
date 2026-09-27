@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npx playwright test tests/WebAPIpart1.spec.js --headed"
+    "regression": "npx playwright test tests/WebAPIpart1.spec.js",
+    "webTests": "npx playwright test --grep @Web",
+    "APITests": "npx playwright test --grep @API",
+    "SafariNewConfig": "npx playwright test --config playwright.config1.js"
+
   },
   "keywords": [],
   "author": "",
@@ -13,6 +17,8 @@
   "devDependencies": {
     "@playwright/test": "^1.62.0",
     "@types/node": "^26.4.0",
+    "allure-commandline": "^2.46.1",
+    "allure-playwright": "^3.12.2",
     "typescript": "^7.0.2"
   },
   "dependencies": {
