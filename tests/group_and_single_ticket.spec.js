@@ -12,7 +12,7 @@ test('single ticket', async ({ page }) => {
 
   // Book one ticket for the first available event.
   await page.locator('[data-testid="event-card"]').nth(2).getByTestId('book-now-btn').click();
-  await page.getByLabel('Full Name').fill('Michael Neftali');
+  await page.getByLabel('Full Name').fill('Michael obinali');
   await page.locator('#customer-email').fill(process.env.EMAIL);
   await page.getByPlaceholder('+91 98765 43210').fill('+234 801 234 5678');
   await page.locator('.confirm-booking-btn').click();
