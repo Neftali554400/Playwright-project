@@ -49,7 +49,11 @@ test('@Webst Client App login', async ({ page }) => {
          );
          await products.nth(i).locator("text= Add To Cart").click();
          const addToCartRequest = await addToCartRequestPromise;
-         const productId = addToCartRequest.postDataJSON()._id;
+         const addToCartPayload = addToCartRequest.postDataJSON();
+  const productId =
+  addToCartPayload.productOrderedId ||
+  addToCartPayload.productId ||
+  addToCartPayload._id;
 
          //Create order API call to create an order
          const orderResponse = await page.request.post('https://rahulshettyacademy.com/api/ecom/order/create-order',
