@@ -19,7 +19,7 @@ test('single ticket', async ({ page }) => {
   await page.getByPlaceholder('+91 98765 43210').fill('+234 801 234 5678');
   await page.locator('.confirm-booking-btn').click();
 
-  // Open the booking details and verify the booking reference.
+  
   await page.getByRole('button', { name: 'View My Bookings' }).click();
   await expect(page).toHaveURL(`${BASE_URL}/bookings`);
   await page.getByRole('link', { name: 'View Details' }).first().click();
