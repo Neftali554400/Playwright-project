@@ -1,5 +1,7 @@
+const fs = require('fs');
 const path = require('path');
-process.loadEnvFile(path.resolve(__dirname, '../.env'));
+const envPath = path.resolve(__dirname, '../.env');
+if (fs.existsSync(envPath)) process.loadEnvFile(envPath);
 const { test, expect } = require('@playwright/test');
 const { loginAndGoToBooking } = require('../helpers/func.helpers.js');
 
