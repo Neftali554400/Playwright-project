@@ -5,7 +5,7 @@ const fakePayLoadOrders = { data: [], message: "No Orders" };
 
 let response;
 
-
+//create order is success
 test('@SP Place the order', async ({ page }) => {
     const apiContext = await request.newContext();
     const apiUtils = new APiUtils(apiContext, loginPayLoad);
