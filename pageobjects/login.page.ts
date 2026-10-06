@@ -1,17 +1,13 @@
-export {};
-
 import { expect, type Locator, type Page } from '@playwright/test';
 
 export class LoginPage {
-  page: Page;
-  emailInput: Locator;
-  passwordInput: Locator;
-  loginButton: Locator;
-  adminLink: Locator;
-  loginError: Locator;
+  private readonly emailInput: Locator;
+  private readonly passwordInput: Locator;
+  private readonly loginButton: Locator;
+  private readonly adminLink: Locator;
+  private readonly loginError: Locator;
 
-  constructor(page: Page) {
-    this.page = page;
+  constructor(private readonly page: Page) {
     this.emailInput = page.getByPlaceholder('you@email.com');
     this.passwordInput = page.getByLabel('Password');
     this.loginButton = page.locator('#login-btn');

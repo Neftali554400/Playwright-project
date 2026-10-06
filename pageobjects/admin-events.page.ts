@@ -1,14 +1,20 @@
-export {};
-
 import { expect, type Locator, type Page } from '@playwright/test';
 
-export class AdminEventsPage {
-  page: Page;
-  adminButton: Locator;
-  manageEventsLink: Locator;
+type EventDetails = {
+  title: string;
+  description: string;
+  city: string;
+  venue: string;
+  date: string;
+  price: string | number;
+  totalSeats: string | number;
+};
 
-  constructor(page: Page) {
-    this.page = page;
+export class AdminEventsPage {
+  private readonly adminButton: Locator;
+  private readonly manageEventsLink: Locator;
+
+  constructor(private readonly page: Page) {
     this.adminButton = page.getByRole('button', { name: 'Admin' });
     this.manageEventsLink = page
       .getByRole('navigation')
@@ -20,15 +26,7 @@ export class AdminEventsPage {
     await this.manageEventsLink.click();
   }
 
-  async createEvent(event: {
-    title: string;
-    description: string;
-    city: string;
-    venue: string;
-    date: string;
-    price: string | number;
-    totalSeats: string | number;
-  }): Promise<void> {
+  async createEvent(event: EventDetails): Promise<void> {
     await this.page.locator('#event-title-input').fill(event.title);
     await this.page.locator('#admin-event-form textarea').fill(event.description);
     await this.page.getByLabel('City').fill(event.city);

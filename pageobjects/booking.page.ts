@@ -1,13 +1,9 @@
-export {};
-
 import { expect, type Locator, type Page } from '@playwright/test';
 
 export class BookingPage {
-  page: Page;
-  bookingCards: Locator;
+  private readonly bookingCards: Locator;
 
-  constructor(page: Page) {
-    this.page = page;
+  constructor(private readonly page: Page) {
     this.bookingCards = page.locator('#booking-card');
   }
 

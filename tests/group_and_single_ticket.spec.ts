@@ -7,6 +7,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { loginAndGoToBooking } from '../helpers/func.helpers';
 
 const envPath = path.resolve(__dirname, '../.env');
+
 if (fs.existsSync(envPath)) {
   dotenv.config({ path: envPath });
 }

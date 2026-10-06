@@ -2,10 +2,10 @@ export {};
 
 import 'dotenv/config';
 import { test, expect } from '@playwright/test';
-import { LoginPage } from '../pages/login.page';
-import { AdminEventsPage } from '../pages/admin-events.page';
-import { EventsPage } from '../pages/events.page';
-import { BookingPage } from '../pages/booking.page';
+import { LoginPage } from '../pageobjects/login.page';
+import { AdminEventsPage } from '../pageobjects/admin-events.page';
+import { EventsPage } from '../pageobjects/events.page';
+import { BookingPage } from '../pageobjects/booking.page';
 
 test('user can create and book an event', async ({ page }) => {
   const baseUrl = 'https://eventhub.rahulshettyacademy.com';

@@ -1,11 +1,9 @@
-export {};
-
 import { expect, type Page } from '@playwright/test';
 
 export const BASE_URL = 'https://eventhub.rahulshettyacademy.com';
 
 export async function loginAndGoToEvents(page: Page): Promise<void> {
-  const email = process.env.EMAIL;
+  const email = process.env.EMAIL?.trim();
   const password = process.env.PASSWORD;
 
   if (!email || !password) {

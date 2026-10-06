@@ -1,5 +1,3 @@
-export {};
-
 import path from 'path';
 import dotenv from 'dotenv';
 import { expect, type Page } from '@playwright/test';
@@ -23,4 +21,3 @@ export async function loginAndGoToBooking(page: Page): Promise<void> {
   await page.locator('#login-btn').click();
   await expect(page.getByRole('link', { name: 'Browse Events →' })).toBeVisible();
 }
-
