@@ -1,7 +1,13 @@
-import { expect } from '@playwright/test';
+export {};
+
+import { expect, type Locator, type Page } from '@playwright/test';
 
 export class AdminEventsPage {
-  constructor(page) {
+  page: Page;
+  adminButton: Locator;
+  manageEventsLink: Locator;
+
+  constructor(page: Page) {
     this.page = page;
     this.adminButton = page.getByRole('button', { name: 'Admin' });
     this.manageEventsLink = page
@@ -9,19 +15,27 @@ export class AdminEventsPage {
       .getByRole('link', { name: 'Manage Events' });
   }
 
-  async open() {
+  async open(): Promise<void> {
     await this.adminButton.click();
     await this.manageEventsLink.click();
   }
 
-  async createEvent(event) {
+  async createEvent(event: {
+    title: string;
+    description: string;
+    city: string;
+    venue: string;
+    date: string;
+    price: string | number;
+    totalSeats: string | number;
+  }): Promise<void> {
     await this.page.locator('#event-title-input').fill(event.title);
     await this.page.locator('#admin-event-form textarea').fill(event.description);
     await this.page.getByLabel('City').fill(event.city);
     await this.page.getByLabel('Venue').fill(event.venue);
-    await this.page.getByLabel('Event Date & Time').fill(event.date);
-    await this.page.getByLabel('Price ($)').fill(event.price);
-    await this.page.getByLabel('Total Seats').fill(event.totalSeats);
+    await this.page.getByLabel('Event Date & Time').fill(String(event.date));
+    await this.page.getByLabel('Price ($)').fill(String(event.price));
+    await this.page.getByLabel('Total Seats').fill(String(event.totalSeats));
 
     await this.page.locator('#add-event-btn').click();
 

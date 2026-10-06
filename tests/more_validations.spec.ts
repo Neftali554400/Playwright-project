@@ -1,3 +1,5 @@
+export {};
+
 import { test, expect } from '@playwright/test';
 
 test('visible and invisible state', async ({ page }) => {

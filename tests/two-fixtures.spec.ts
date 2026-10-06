@@ -1,4 +1,6 @@
-// tests/events.spec.js
+export {};
+
+// tests/events.spec.ts
 const { expect } = require('@playwright/test');
 const { customtest } = require('./Utils/fixtures');
 

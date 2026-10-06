@@ -1,4 +1,6 @@
-const { customtest } = require('./Utils/fixtures.js');
+export {};
+
+const { customtest } = require('./Utils/fixtures');
 
 customtest('Fixtures demo', async ({ authenticatedPage }) => {
   await authenticatedPage.goto('https://rahulshettyacademy.com/client');

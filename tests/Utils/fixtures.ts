@@ -1,17 +1,29 @@
-// Utils/fixtures.js
+export {};
+
+// Utils/fixtures.ts
 const { test: base } = require('@playwright/test');
+
+function getCredentials(): { email: string; password: string } {
+  const email = process.env.EVENTHUB_EMAIL || process.env.EMAIL;
+  const password = process.env.EVENTHUB_PASSWORD || process.env.PASSWORD;
+
+  if (!email || !password) {
+    throw new Error('EVENTHUB_EMAIL and EVENTHUB_PASSWORD must be set');
+  }
+
+  return { email, password };
+}
 
 const customtest = base.extend({
   authStorage: async ({ browser }, use) => {
     const context = await browser.newContext();
     const page = await context.newPage();
 
-    const EMAIL = process.env.EVENTHUB_EMAIL || 'michael.neftali@gmail.com';
-    const PASSWORD = process.env.EVENTHUB_PASSWORD || 'Kike#124#^&^&^';
+    const { email, password } = getCredentials();
 
     await page.goto('https://eventhub.rahulshettyacademy.com');
-    await page.getByPlaceholder('you@email.com').fill(EMAIL);
-    await page.getByLabel('Password').fill(PASSWORD);
+    await page.getByPlaceholder('you@email.com').fill(email);
+    await page.getByLabel('Password').fill(password);
     await page.locator('#login-btn').click();
 
     await page.getByRole('link', { name: /Browse Events/i }).first().waitFor({
@@ -37,13 +49,12 @@ const customtest = base.extend({
   },
 
   createEvent: async ({ request }, use) => {
-    const EMAIL = process.env.EVENTHUB_EMAIL || 'michael.neftali@gmail.com';
-    const PASSWORD = process.env.EVENTHUB_PASSWORD || 'Kike#124#^&^&^';
+    const { email, password } = getCredentials();
 
     const loginRes = await request.post('https://api.eventhub.rahulshettyacademy.com/api/auth/login', {
       data: {
-        email: EMAIL,
-        password: PASSWORD,
+        email,
+        password,
       },
     });
 

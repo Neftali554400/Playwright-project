@@ -1,3 +1,5 @@
+export {};
+
 const { test, expect } = require('@playwright/test');
 
 const BASE_URL = 'https://eventhub.rahulshettyacademy.com';

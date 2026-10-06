@@ -1,7 +1,16 @@
-import { expect } from '@playwright/test';
+export {};
+
+import { expect, type Locator, type Page } from '@playwright/test';
 
 export class LoginPage {
-  constructor(page) {
+  page: Page;
+  emailInput: Locator;
+  passwordInput: Locator;
+  loginButton: Locator;
+  adminLink: Locator;
+  loginError: Locator;
+
+  constructor(page: Page) {
     this.page = page;
     this.emailInput = page.getByPlaceholder('you@email.com');
     this.passwordInput = page.getByLabel('Password');
@@ -10,7 +19,7 @@ export class LoginPage {
     this.loginError = page.locator('[role="alert"], .error, .alert');
   }
 
-  async login(email, password) {
+  async login(email: string, password: string): Promise<void> {
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);
     await this.loginButton.click();

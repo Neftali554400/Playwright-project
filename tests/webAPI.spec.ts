@@ -1,3 +1,5 @@
+export {};
+
 import { test, expect, request } from '@playwright/test';
 const loginPayload = { userEmail: "michael.neftali@gmail.com", userPassword: "Kike#124#^&^&^" };
 let token;

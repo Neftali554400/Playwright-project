@@ -1,3 +1,5 @@
+export {};
+
 const { test, expect, request } = require('@playwright/test');
 const { APiUtils } = require('./Utils/API_utils');
 const loginPayLoad = { userEmail: "michael.neftali@gmail.com", userPassword: "Kike#124#^&^&^" };
