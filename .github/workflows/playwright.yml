@@ -4,19 +4,13 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
-  workflow_dispatch:
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    env:
-      EMAIL: ${{ secrets.EVENTHUB_EMAIL }}
-      PASSWORD: ${{ secrets.EVENTHUB_PASSWORD }}
-      EVENTHUB_EMAIL: ${{ secrets.EVENTHUB_EMAIL }}
-      EVENTHUB_PASSWORD: ${{ secrets.EVENTHUB_PASSWORD }}
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
+    - uses: actions/checkout@v6
+    - uses: actions/setup-node@v6
       with:
         node-version: lts/*
     - name: Install dependencies
