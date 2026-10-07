@@ -5,15 +5,16 @@ const { test, expect } = require('@playwright/test');
 const BASE_URL = 'https://eventhub.rahulshettyacademy.com';
 const API_URL = `${BASE_URL}/api`;
 
-const YAHOO_USER = {
-  email: 'youryahoouser@yahoo.com',
-  password: 'YourPassword123'
-};
+function getCrossUser(role: 'OWNER' | 'GUEST') {
+  const email = process.env[`CROSS_USER_${role}_EMAIL`];
+  const password = process.env[`CROSS_USER_${role}_PASSWORD`];
 
-const GMAIL_USER = {
-  email: 'yourgmailuser@gmail.com',
-  password: 'YourPassword123'
-};
+  if (!email || !password) {
+    throw new Error(`CROSS_USER_${role}_EMAIL and CROSS_USER_${role}_PASSWORD must be set`);
+  }
+
+  return { email, password };
+}
 
 async function loginAs(page, user) {
   await page.goto(BASE_URL);
@@ -34,13 +35,15 @@ async function loginAs(page, user) {
 }
 
 test('Cross-User Booking Access Denied', async ({ page, request }) => {
+  const owner = getCrossUser('OWNER');
+  const guest = getCrossUser('GUEST');
 
   const loginRes = await request.post(
     `${API_URL}/auth/login`,
     {
       data: {
-        email: YAHOO_USER.email,
-        password: YAHOO_USER.password
+        email: owner.email,
+        password: owner.password
       }
     }
   );
@@ -74,7 +77,7 @@ test('Cross-User Booking Access Denied', async ({ page, request }) => {
       data: {
         eventId: eventId,
         customerName: 'Yahoo User',
-        customerEmail: YAHOO_USER.email,
+        customerEmail: owner.email,
         customerPhone: '08012345678',
         quantity: 1
       }
@@ -88,7 +91,7 @@ test('Cross-User Booking Access Denied', async ({ page, request }) => {
 
   console.log('Yahoo Booking ID:', yahooBookingId);
 
-  await loginAs(page, GMAIL_USER);
+  await loginAs(page, guest);
 
   await page.goto(
     `${BASE_URL}/bookings/${yahooBookingId}`,

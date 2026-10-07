@@ -4,15 +4,16 @@ const { test, expect } = require('@playwright/test');
 
 const BASE_URL = 'https://eventhub.rahulshettyacademy.com';
 
-const YAHOO_USER = {
-  email: 'michael.neftali@gmail.com',
-  password: 'Kike#124#^&^&^'
-};
+function getCrossUser(role: 'OWNER' | 'GUEST') {
+  const email = process.env[`CROSS_USER_${role}_EMAIL`];
+  const password = process.env[`CROSS_USER_${role}_PASSWORD`];
 
-const GMAIL_USER = {
-  email: 'michael.neftali@gmail.com',
-  password: 'Kike#124#^&^&^'
-};
+  if (!email || !password) {
+    throw new Error(`CROSS_USER_${role}_EMAIL and CROSS_USER_${role}_PASSWORD must be set`);
+  }
+
+  return { email, password };
+}
 
 async function loginAs(page, user) {
   await page.goto(BASE_URL);
@@ -24,12 +25,15 @@ async function loginAs(page, user) {
 }
 
 test('Cross-User Booking Access Denied', async ({ page, browser }) => {
-  await loginAs(page, YAHOO_USER);
+  const owner = getCrossUser('OWNER');
+  const guest = getCrossUser('GUEST');
+
+  await loginAs(page, owner);
   await page.goto(`${BASE_URL}/events`);
 
   await page.locator('[data-testid="event-card"]').first().getByTestId('book-now-btn').click();
   await page.getByLabel('Full Name').fill('Yahoo User');
-  await page.locator('#customer-email').fill(YAHOO_USER.email);
+  await page.locator('#customer-email').fill(owner.email);
   await page.getByPlaceholder('+91 98765 43210').fill('+234 801 234 5678');
   await page.locator('.confirm-booking-btn').click();
 
@@ -43,7 +47,7 @@ test('Cross-User Booking Access Denied', async ({ page, browser }) => {
   const secondPage = await browser.newPage();
 
   try {
-    await loginAs(secondPage, GMAIL_USER);
+    await loginAs(secondPage, guest);
     await secondPage.goto(bookingUrl, { waitUntil: 'networkidle' });
     await expect(secondPage.getByText('Access Denied')).toBeVisible();
     await expect(secondPage.getByText('You are not authorized to view this booking')).toBeVisible();

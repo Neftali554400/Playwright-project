@@ -1,4 +1,7 @@
 name: Playwright Tests
+permissions:
+  contents: read
+  id-token: write
 on:
   push:
     branches: [ main, master ]
@@ -6,6 +9,7 @@ on:
     branches: [ main, master ]
 jobs:
   test:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
@@ -15,11 +19,22 @@ jobs:
         node-version: lts/*
     - name: Install dependencies
       run: npm ci
-    - name: Install Playwright Browsers
-      timeout-minutes: 20
-      run: npx playwright install --with-deps chromium
+    - name: Sign in to Azure
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
     - name: Run Playwright tests
-      run: npx playwright test
+      run: npx playwright test --config=playwright.service.config.js --workers=4
+      env:
+        PLAYWRIGHT_SERVICE_URL: ${{ secrets.PLAYWRIGHT_SERVICE_URL }}
+        EMAIL: ${{ secrets.EMAIL }}
+        PASSWORD: ${{ secrets.PASSWORD }}
+        CROSS_USER_OWNER_EMAIL: ${{ secrets.CROSS_USER_OWNER_EMAIL }}
+        CROSS_USER_OWNER_PASSWORD: ${{ secrets.CROSS_USER_OWNER_PASSWORD }}
+        CROSS_USER_GUEST_EMAIL: ${{ secrets.CROSS_USER_GUEST_EMAIL }}
+        CROSS_USER_GUEST_PASSWORD: ${{ secrets.CROSS_USER_GUEST_PASSWORD }}
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
