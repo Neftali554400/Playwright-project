@@ -23,7 +23,7 @@ test('UI controls', async ({ page }) => {
 
     });
 
-    //await page.pause();
+    
 
 
 test('child window handling', async ({ browser }) => {
